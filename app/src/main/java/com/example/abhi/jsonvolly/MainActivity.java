@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tvData;
         Button btEnter;
     EditText etUser,etPass;
-        String url="http:www.yourURL.com";
+        String url="http://66.85.152.27:8080/myMobileClass/authenticateuser";
         RequestQueue requestQueue;
 //        AlertDialog.Builder builder;
 //        String username,password,regid,schemaname;
@@ -79,16 +79,10 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
 
-                                try {
+                                // String status = response.getString("status");
+                                // String message = response.getString("errorMessage");
+                                tvData.setText(response.toString());
 
-                                    String status = response.getString("status");
-                                   // String message = response.getString("errorMessage");
-                                        tvData.setText(response.toString());
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    tvData.setText("Error");
-                                }
                             }
                         },
 
