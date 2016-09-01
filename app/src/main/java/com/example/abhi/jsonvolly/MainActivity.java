@@ -33,10 +33,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-        TextView tvData;
+        TextView tvData,tvId,tvName;
         Button btEnter;
     EditText etUser,etPass;
-        String url="http://66.85.152.27:8080/myMobileClass/authenticateuser";
+        String url="http://www.yourwebadd.com";
         RequestQueue requestQueue;
 //        AlertDialog.Builder builder;
 //        String username,password,regid,schemaname;
@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tvData=(TextView)findViewById(R.id.tvData);
+        tvId=(TextView)findViewById(R.id.tvId);
+        tvName=(TextView)findViewById(R.id.tvName);
         btEnter=(Button)findViewById(R.id.btEnter);
         etUser=(EditText)findViewById(R.id.etUser);
         etPass=(EditText)findViewById(R.id.etPass);
@@ -78,10 +80,22 @@ public class MainActivity extends AppCompatActivity {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
+//                        stopLoading();
 
-                                // String status = response.getString("status");
-                                // String message = response.getString("errorMessage");
-                                tvData.setText(response.toString());
+                                try {
+                                    String Id = response.getString("id");
+                                    String Name=response.getString("name");
+                                    String Email = response.getString("emailid");
+                                    tvId.setText(Id);
+                                    tvName.setText(Name);
+                                    tvData.setText(Email);
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                //tvData.setText(response.toString());
 
                             }
                         },
