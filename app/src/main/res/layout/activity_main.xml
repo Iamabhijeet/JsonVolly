@@ -22,7 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:hint="UserId"
         android:id="@+id/etUser"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
     <EditText
@@ -31,7 +31,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:hint="Password"
         android:id="@+id/etPass"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -76,6 +76,15 @@
         android:textSize="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save to Realm DB"
+        android:id="@+id/btSaveRealm"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
 
 
 

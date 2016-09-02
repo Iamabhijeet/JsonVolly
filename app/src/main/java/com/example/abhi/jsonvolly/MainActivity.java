@@ -1,6 +1,7 @@
 package com.example.abhi.jsonvolly;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.abhi.jsonvolly.RealmManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -32,12 +36,19 @@ import java.lang.ref.ReferenceQueue;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.internal.Context;
+
 public class MainActivity extends AppCompatActivity {
         TextView tvData,tvId,tvName;
-        Button btEnter;
-    EditText etUser,etPass;
-        String url="http://www.yourwebadd.com";
+        Button btEnter,btSaveRealm;
+        EditText etUser,etPass;
+        String url="http://66.85.152.27:8080/myMobileClass/signup";
         RequestQueue requestQueue;
+        Realm realm;
+//        Context context;
+//        android.content.Context con;
 //        AlertDialog.Builder builder;
 //        String username,password,regid,schemaname;
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         tvId=(TextView)findViewById(R.id.tvId);
         tvName=(TextView)findViewById(R.id.tvName);
         btEnter=(Button)findViewById(R.id.btEnter);
+        btSaveRealm=(Button)findViewById(R.id.btSaveRealm);
         etUser=(EditText)findViewById(R.id.etUser);
         etPass=(EditText)findViewById(R.id.etPass);
         Cache cache=new DiskBasedCache(getCacheDir(),1024*1024);
@@ -54,12 +66,16 @@ public class MainActivity extends AppCompatActivity {
         requestQueue = new RequestQueue(cache,network);
         requestQueue.start();
 
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(this)
+                .deleteRealmIfMigrationNeeded().build();
+        final Realm realm = Realm.getInstance(realmConfig);
+//        realm=Realm.getInstance(context);
 
 
 
         btEnter.setOnClickListener(new View.OnClickListener() {
-            String name=etUser.getText().toString();
-            String pass=etPass.getText().toString();
+//            String name=etUser.getText().toString();
+//            String pass=etPass.getText().toString();
 
             @Override
             public void onClick(View view) {
@@ -67,10 +83,19 @@ public class MainActivity extends AppCompatActivity {
                 requestQueue= Volley.newRequestQueue(MainActivity.this);
                 JSONObject params = new JSONObject();
                 try {
-                    params.put("username", name);
-                    params.put("password",pass);
-                    params.put("regid","");
+
+                    params.put("name","Amol");
+                    params.put("emailid" , "amol.dhole@qaagility.com");
+                    params.put("password" ,"abc");
+                    params.put("div" , "Morning");
+                    params.put("AcademicYear" , "2015");
+                    params.put("Standard","Phonics");
                     params.put("schemaname","phonickids");
+
+//                    params.put("username", name);
+//                    params.put("password",pass);
+//                    params.put("regid","");
+//                    params.put("schemaname","phonickids");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -83,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
 //                        stopLoading();
 
                                 try {
-                                    String Id = response.getString("id");
-                                    String Name=response.getString("name");
-                                    String Email = response.getString("emailid");
+                                    String Id = response.getString("uniqueid");
+                                    String Name=response.getString("status");
+                                    String Email = response.getString("errorMessage");
                                     tvId.setText(Id);
                                     tvName.setText(Name);
                                     tvData.setText(Email);
@@ -116,6 +141,61 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+        });
+
+        btSaveRealm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final String id=tvId.getText().toString();
+                final String name=tvName.getText().toString();
+                final String email=tvData.getText().toString();
+
+
+
+
+
+
+
+
+
+
+
+//                String[] names = getResources().getStringArray(R.array.names);
+//                String[] majors = getResources().getStringArray(R.array.majors);
+//                String[] years = getResources().getStringArray(R.array.years);
+//                realm.executeTransaction(new Realm.Transaction() {
+//                    Person p = new Person();
+//                    @Override
+//                    public void execute(Realm realm) {
+//                            Person person=realm.createObject(Person.class);
+//
+//
+                          Person person = new Person();
+                            person.setUserID(id);
+                            person.setUserName(name);
+                            person.setUserEmail(email);
+
+                        realm.beginTransaction();
+                        realm.copyToRealm(person);
+                        realm.commitTransaction();
+                Intent R=new Intent(MainActivity.this,ShowData.class);
+                startActivity(R);
+                Toast.makeText(MainActivity.this, "Saved Into Database", Toast.LENGTH_SHORT).show();
+//
+//
+//
+//
+//
+//                           // realm.insertOrUpdate(person);
+//                        }
+//                    });
+
+
+
+
+
+            }
         });
 
     }
